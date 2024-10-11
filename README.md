@@ -1,2 +1,2 @@
-# Minecraft Pvp Ai Bot (MPB)
-A Minecraft ai bot made with TensorFlow
+# Minecraft Pvp Bot with Reinforcement Learning (MPB)
+A Minecraft bot with reinforcement learning using TensorFlow
