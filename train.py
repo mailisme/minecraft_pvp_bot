@@ -1,22 +1,40 @@
-import tensorflow as tf
+import numpy as np
+import torch
+import torch.nn as nn
 
-mnist = tf.keras.datasets.mnist
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+x = np.random.rand(10000)
+y = 1-x
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-x_train, x_test = x_train / 255.0, x_test / 255.0
+class test(nn.Module):
+    def __init__(self, numClasses=7):
+        super(test, self).__init__()
+        self.classifier = nn.Sequential(
+            nn.Linear(1, 1),
+        )
 
-model = tf.keras.models.Sequential([
-  tf.keras.layers.Flatten(input_shape=(28, 28)),
-  tf.keras.layers.Dense(128, activation='relu'),
-  tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(10, activation='softmax')
-])
-
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+    def forward(self, x):
+        return self.classifier(x)
 
 
-model.fit(x_train, y_train, epochs=5)
+model = test()
+optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 
-model.evaluate(x_test,  y_test, verbose=2)
+dataset = zip(x, y)
+loss_function = nn.MSELoss()
+
+for x, y in dataset:
+    optimizer.zero_grad()
+    y = torch.tensor([y], dtype=torch.float)
+
+    # Wrap the float value in a Tensor using torch.tensor()
+    output = model(torch.tensor([x], dtype=torch.float))
+
+    loss = loss_function(output, y)
+
+    print(loss)
+
+    loss.backward()
+    optimizer.step()
+print(model(torch.tensor([1], dtype=torch.float)))
+torch.save(model, "/ai/1-1.pt")
