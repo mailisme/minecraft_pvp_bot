@@ -1,9 +1,10 @@
 import numpy as np
 import torch
 import torch.nn as nn
+import os
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-x = np.random.rand(10000)
+x = np.random.rand(100000)
 y = 1-x
 
 class test(nn.Module):
@@ -36,5 +37,7 @@ for x, y in dataset:
 
     loss.backward()
     optimizer.step()
+
 print(model(torch.tensor([1], dtype=torch.float)))
-torch.save(model, "/ai/1-1.pt")
+os.makedirs("ai", exist_ok=True)
+torch.save(model, "ai/1-1.pt")
