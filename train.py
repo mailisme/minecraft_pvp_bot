@@ -39,5 +39,5 @@ for x, y in dataset:
     optimizer.step()
 
 print(model(torch.tensor([1], dtype=torch.float)))
-os.makedirs("ai", exist_ok=True)
-torch.save(model, "ai/1-1.pt")
+os.makedirs("output", exist_ok=True)
+torch.save(model, "output/1-1.pt")
