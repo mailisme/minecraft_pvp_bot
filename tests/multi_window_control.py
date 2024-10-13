@@ -2,6 +2,7 @@ from win32con import *
 from win32gui import *
 from win32api import *
 import time
+from multi_window_control2 import run
 
 target_hwnds = []
 
@@ -15,9 +16,20 @@ def add_next_hwnd(hwnd, _extra):
 
 EnumWindows(add_next_hwnd, None)
 
+# while True:
+#     for hwnd in target_hwnds:
+#         SetForegroundWindow(hwnd)
+#         keybd_event(0x57, 0, 0, 0)
+#         keybd_event(0x57, 0, 0, KEYEVENTF_KEYUP)
+#         time.sleep(0.05)
+
+def get_hwnd(a):
+    return target_hwnds[a]
+
+run()
+
 while True:
-    for hwnd in target_hwnds:
-        SetForegroundWindow(hwnd)
-        keybd_event(0x57, 0, 0, 0)
-        keybd_event(0x57, 0, 0, KEYEVENTF_KEYUP)
-        time.sleep(0.05)
+    SetForegroundWindow(get_hwnd(0))
+    keybd_event(0x57, 0, 0, 0)
+    keybd_event(0x57, 0, 0, KEYEVENTF_KEYUP)
+    time.sleep(0.05)
